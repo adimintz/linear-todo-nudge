@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Linear to-do nudge",
+  "version": "1.0.0",
+  "description": "On linear.app, offers to start a Claude Code session on your to-do tickets.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://api.linear.app/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["https://linear.app/*"], "js": ["content.js"], "run_at": "document_idle" }
+  ],
+  "options_page": "options.html",
+  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
+  "action": {
+    "default_title": "Linear to-do nudge",
+    "default_icon": { "16": "icons/icon-16.png", "32": "icons/icon-32.png" }
+  }
+}

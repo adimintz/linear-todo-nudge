@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Linear to-do nudge settings</title>
+  <style>
+    body { font: 14px/1.5 system-ui, sans-serif; max-width: 520px; margin: 32px auto; padding: 0 16px; }
+    label { display: block; margin-top: 16px; font-weight: 600; }
+    input { width: 100%; padding: 6px 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 16px; padding: 6px 14px; }
+    small { color: #777; }
+  </style>
+</head>
+<body>
+  <h1>Linear to-do nudge</h1>
+  <label>Linear personal API key
+    <input id="apiKey" type="password" autocomplete="off">
+  </label>
+  <small>Create one in Linear: Settings → Account → Security &amp; access → Personal API keys. Read access is enough.</small>
+  <label>Folder for the new Claude Code session
+    <input id="folder">
+  </label>
+  <button id="save">Save</button>
+  <button id="reset">Reset addressed tickets</button>
+  <p id="status"></p>
+  <script src="options.js"></script>
+</body>
+</html>
