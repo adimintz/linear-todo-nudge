@@ -27,8 +27,6 @@ const STYLE = `
   .close { all: unset; cursor: pointer; color: var(--muted); width: 22px; height: 22px; border-radius: 4px;
     display: grid; place-items: center; font-size: 15px; line-height: 1; }
   .close:hover { background: var(--hover); color: var(--fg); }
-  .reset { all: unset; cursor: pointer; color: var(--muted); font-size: 12px; padding: 2px 6px; border-radius: 4px; }
-  .reset:hover { background: var(--hover); color: var(--fg); }
   .message { margin: 0; padding: 0 14px 12px; color: var(--muted); }
   .message.error { color: var(--error); }
   ul { margin: 0; padding: 0 6px 6px; list-style: none; max-height: 220px; overflow: auto; }
@@ -67,7 +65,7 @@ function element(tag, props = {}, children = []) {
   return node;
 }
 
-function showPopover(title, bodyNodes, buttons, headerActions = []) {
+function showPopover(title, bodyNodes, buttons) {
   removePopover();
   const host = element('div', { id: HOST_ID });
   const root = host.attachShadow({ mode: 'open' });
@@ -77,7 +75,7 @@ function showPopover(title, bodyNodes, buttons, headerActions = []) {
   root.append(
     element('style', { textContent: STYLE }),
     element('div', { className: isDarkPage() ? 'card dark' : 'card', role: 'dialog' }, [
-      element('div', { className: 'header' }, [element('div', { className: 'title' }, title), ...headerActions, close]),
+      element('div', { className: 'header' }, [element('div', { className: 'title' }, title), close]),
       ...bodyNodes,
       element('div', { className: 'actions' }, buttons)
     ])
@@ -94,7 +92,8 @@ function button(label, variant, onClick) {
 function openClaudeSession(tickets, folder) {
   const ids = tickets.map((ticket) => ticket.identifier).join(' ');
   const params = new URLSearchParams({ q: `Use the tickets skill on these tickets: ${ids}`, folder });
-  element('a', { href: `claude://code/new?${params}` }).click();
+  // Navigating the page to the claude:// URL makes Chrome hand it to the Claude app (with an "Open Claude?" prompt).
+  window.location.href = `claude://code/new?${params}`;
 }
 
 async function check() {
@@ -126,14 +125,7 @@ async function check() {
     showPopover(['Work on your to-do tickets?', element('span', { className: 'count', textContent: tickets.length })], [list], [
       button('Not now', 'secondary', removePopover),
       button('Open in Claude', 'primary', () => { markAddressed(); removePopover(); openClaudeSession(tickets, folder); })
-    ], [
-      element('button', { className: 'reset', textContent: 'Reset', title: 'Show every to-do ticket again, including addressed ones' })
     ]);
-    document.getElementById(HOST_ID).shadowRoot.querySelector('.reset').addEventListener('click', async () => {
-      await chrome.storage.local.set({ addressed: [] });
-      removePopover();
-      check();
-    });
   }
 }
 

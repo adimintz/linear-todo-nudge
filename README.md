@@ -14,5 +14,5 @@ Chrome extension. While linear.app is open, it checks your to-do (unstarted) Lin
 
 - **Open in Claude** opens `claude://code/new?q=…&folder=…` and marks the tickets as addressed.
 - **Not now** only closes the popover. It shows again on the next check.
-- **Reset** (popover header, or settings) clears the addressed list, so every to-do ticket is offered again.
+- **Reset addressed tickets** (settings page) clears the addressed list, so every to-do ticket is offered again.
 - The API key, folder and addressed list are kept in the extension's Chrome storage.
